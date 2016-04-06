@@ -15,6 +15,12 @@ public class User {
     private String introduction;
 
 
+    public User()
+    {
+
+    }
+
+
     public User(String userName, String firstName, String lastName, String password, String email, String dateOfBirth, String introduction) {
         this.userName = userName;
         this.firstName = firstName;

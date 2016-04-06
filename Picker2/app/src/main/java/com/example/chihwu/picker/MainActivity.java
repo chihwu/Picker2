@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         pickersDB = new PickersDB(this);
         Log.i("DATABASE CREATED : ",pickersDB.toString());
 
-        User user = pickersDB.getUser("Raymond");
-        Log.i("IN MAIN ", user.getUserName());
+
     }
 
     @Override

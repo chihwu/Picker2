@@ -14,8 +14,8 @@ import dataObjects.User;
  */
 public class PickersDB {
 
-    public static final String DB_NAME = "pickers.db";
-    public static final int DB_VERSION = 1;
+    public static final String DB_NAME = "pickers2.db";
+    public static final int DB_VERSION = 2;
 
     public static final String USER_TABLE = "user";
 
@@ -50,9 +50,10 @@ public class PickersDB {
             USER_NAME + " TEXT NOT NULL, "+
             USER_FIRSTNAME + " TEXT, "+
             USER_LASTNAME + " TEXT,  "+
-            USER_EMAIL + "TEXT NOT NULL UNIQUE, "+
-            USER_DOB + "TEXT, "+
-            USER_INTRO + "TEXT);";
+            USER_PASSWORD + " TEXT NOT NULL, "+
+            USER_EMAIL + " TEXT NOT NULL UNIQUE, "+
+            USER_DOB + " TEXT, "+
+            USER_INTRO + " TEXT);";
 
     public static final String DROP_USER_TABLE =
             "DROP TABLE IF EXISTS "+USER_TABLE;
@@ -69,7 +70,7 @@ public class PickersDB {
         public void onCreate(SQLiteDatabase db){
             db.execSQL(CREATE_USER_TABLE);
 
-            db.execSQL("INSERT INTO user VALUES(1,'Raymond','Ray','Wu','chihwu@bu.edu','11/23/1990','Hi, this is Ray.')");
+            db.execSQL("INSERT INTO user VALUES(1,'Raymond','Ray','Wu','1234', 'chihwu@bu.edu','11/23/1990','Hi, this is Ray.')");
         }
 
 
@@ -95,7 +96,7 @@ public class PickersDB {
         db = dbHelper.getReadableDatabase();
     }
 
-    private  void openWritableDB()
+    private void openWritableDB()
     {
         db = dbHelper.getWritableDatabase();
     }
@@ -109,9 +110,28 @@ public class PickersDB {
     }
 
 
-    public User getUser(String name){
-        String where = USER_NAME + "= ?";
-        String[] whereArgs = {name};
+    public User getUser(int id){
+        String where = USER_ID + "= ?";
+        String[] whereArgs = {Integer.toString(id)};
+
+        this.openReadableDB();
+        Cursor cursor = db.query(USER_TABLE, null, where, whereArgs, null, null, null);
+
+        cursor.moveToFirst();
+        User user = getUserFromCursor(cursor);
+        if(cursor != null)
+        {
+            cursor.close();
+        }
+
+        this.closeDB();
+
+        return user;
+    }
+
+    public User getUserByEmail(String email){
+        String where = USER_EMAIL + "= ?";
+        String[] whereArgs = {email};
 
         this.openReadableDB();
         Cursor cursor = db.query(USER_TABLE, null, where, whereArgs, null, null, null);
@@ -131,35 +151,34 @@ public class PickersDB {
 
     private static User getUserFromCursor(Cursor cursor){
 
-//        if(cursor == null || cursor.getCount() == 0)
-//        {
-//            return null;
-//        }
-//        else
-//        {
-//            try{
-////                return new User(
-////                        cursor.getInt(USER_ID_COL),
-////                        cursor.getString(USER_NAME_COL),
-////                        cursor.getString(USER_FIRSTNAME_COL),
-////                        cursor.getString(USER_LASTNAME_COL),
-////                        cursor.getString(USER_PASSWORD_COL),
-////                        cursor.getString(USER_EMAIL_COL),
-////                        cursor.getString(USER_DOB_COL),
-////                        cursor.getString(USER_INTRO_COL)
-////                );
-//
-//
-//
-//
-//            }
-//            catch(Exception e)
-//            {
-//                return null;
-//            }
-//        }
+        if(cursor == null || cursor.getCount() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            try{
+                return new User(
+                        cursor.getInt(USER_ID_COL),
+                        cursor.getString(USER_NAME_COL),
+                        cursor.getString(USER_FIRSTNAME_COL),
+                        cursor.getString(USER_LASTNAME_COL),
+                        cursor.getString(USER_PASSWORD_COL),
+                        cursor.getString(USER_EMAIL_COL),
+                        cursor.getString(USER_DOB_COL),
+                        cursor.getString(USER_INTRO_COL)
+                );
 
-        return new User(1,"Raymond","Chih","Wu","1234","","","");
+
+
+
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
 
     }
 
@@ -176,7 +195,7 @@ public class PickersDB {
         cv.put(USER_INTRO, user.getIntroduction());
 
         this.openWritableDB();
-        //String[] columns = {USER_NAME, USER_FIRSTNAME, USER_LASTNAME, USER_PASSWORD, USER_EMAIL, USER_DOB, USER_INTRO};
+
         long rowID = db.insert(USER_TABLE, null, cv);
         this.closeDB();
 
@@ -194,6 +213,8 @@ public class PickersDB {
         cv.put(USER_EMAIL, user.getEmail());
         cv.put(USER_DOB, user.getDateOfBirth());
         cv.put(USER_INTRO, user.getIntroduction());
+
+
 
         String where = USER_ID + "= ?";
         String[] whereArgs = {String.valueOf(user.getId())};

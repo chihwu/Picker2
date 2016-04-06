@@ -1,5 +1,6 @@
 package com.example.chihwu.picker;
 
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,15 +86,31 @@ public class SignUpActivity extends FragmentActivity implements OnClickListener 
         String user_dob = user_dob_btn.getText().toString();
         String user_intro = user_intro_txtField.getText().toString();
 
-        User user = new User(user_name, user_firstname, user_lastname, user_password, user_email, user_dob, user_intro);
-
-        try
+        if(user_name.trim().equalsIgnoreCase("") || user_firstname.trim().equalsIgnoreCase("") || user_lastname.trim().equalsIgnoreCase("") || user_password.trim().equalsIgnoreCase("") || user_email.trim().equalsIgnoreCase(""))
         {
-            pickersDB.insertUser(user);
+            Toast.makeText(getApplicationContext(), "Make sure you enterd username, first name, last name, password, and email.",Toast.LENGTH_LONG).show();
         }
-        catch(Exception e)
+        else
         {
-            Toast.makeText(getApplicationContext(), "New User Is Created Successfully.",Toast.LENGTH_LONG).show();
+            User user = new User(user_name, user_firstname, user_lastname, user_password, user_email, user_dob, user_intro);
+
+            try
+            {
+                int userID = (int)pickersDB.insertUser(user);
+                Toast.makeText(getApplicationContext(), "New User Is Created Successfully.",Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                intent.putExtra("username", user.getUserName());
+
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+            catch(Exception e)
+            {
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            }
+
+
         }
 
     }
