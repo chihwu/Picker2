@@ -1,8 +1,11 @@
 package com.example.chihwu.picker;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.util.Log;
 import android.widget.Toast;
+
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,6 +33,7 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
     private Button signinBtn;
     private PickersDB db;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
         signinBtn.setOnClickListener(this);
 
         db = MainActivity.pickersDB;
+
 
     }
 
@@ -88,25 +94,8 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
                         Toast.makeText(this, "User signin record is not saved successfully.", Toast.LENGTH_SHORT).show();
                     }
 
-                    try
-                    {
-                        FileInputStream fis;
-                        fis = openFileInput("user_signin.txt");
-                        byte[] reader = new byte[fis.available()];
 
-                        while(fis.read(reader) != -1)
-                        {
 
-                        }
-
-                        CharSequence text1 =new String(reader);
-                        Toast.makeText(this, text1, Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch(IOException e)
-                    {
-
-                    }
 
                     startActivity(intent);
                 }
@@ -126,4 +115,7 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
         String stored_email = savedValues.getString("email", "");
         email_textview.setText(stored_email);
     }
+
+
+
 }

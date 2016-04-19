@@ -13,6 +13,8 @@ public class User {
     private String email;
     private String dateOfBirth;
     private String introduction;
+    private double currentLat;
+    private double currentLong;
 
 
     public User()
@@ -40,6 +42,19 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.introduction = introduction;
+    }
+
+    public User(int id, String userName, String firstName, String lastName, String password, String email, String dateOfBirth, String introduction, double currentLat, double currentLong) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.introduction = introduction;
+        this.currentLat = currentLat;
+        this.currentLong = currentLong;
     }
 
     public int getId() {
@@ -104,6 +119,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setCurrentLat(double currentLat) {
+        this.currentLat = currentLat;
+    }
+
+    public void setCurrentLong(double currentLong) {
+        this.currentLong = currentLong;
+    }
+
+    public double getCurrentLat() {
+        return currentLat;
+    }
+
+    public double getCurrentLong() {
+        return currentLong;
     }
 
     @Override

@@ -18,6 +18,11 @@
     <string name="contact_title">Contact Us</string>
     <string name="show_on_map_btn">Show On Map</string>
     <string name="connection_status_title">Connection Status</string>
+    <string name="invite_friends_title">Invite Your Friends</string>
+    <string name="login_history_title">Your Login History</string>
+    <string name="google_maps_key">AIzaSyBdylvYnilt5yKLiDI2CwV4VUoSKWM7WRk</string>
+    <string name="search_title">Search</string>
+    <string name="our_website_title">Our Website</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">This function is still under construction.</string>

@@ -1,5 +1,5 @@
-# Picker2
-Mobile Application Assignment 4
+# Pickers
+Mobile Application Assignment 5
 
 Please note the in order for the contacts Content Provider of my app runs successfully, one
 needs to use a device rather than the emulator to run the app. In addition, the function from 
