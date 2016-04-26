@@ -25,10 +25,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
+import android.app.AlertDialog;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.telephony.TelephonyManager;
+import android.content.DialogInterface;
 
 //Known issues: Profile Activity contains the FunctionListFragment and now displays an action bar for menu
 
@@ -126,6 +128,10 @@ public class ProfileActivity extends AppCompatActivity implements OnItemClickLis
                     Intent callIntent = new Intent(Intent.ACTION_DIAL, callUri);
                     startActivity(callIntent);
                 }
+                else
+                {
+                    Toast.makeText(this, "Make sure your SIM card is available.", Toast.LENGTH_LONG).show();
+                }
 
                 return true;
             case R.id.menu_connection:   // show the network connection status when selected
@@ -134,6 +140,41 @@ public class ProfileActivity extends AppCompatActivity implements OnItemClickLis
                 return true;
             case R.id.our_website:  // access the website of our school
                 new WebAccessTask().execute();
+
+
+
+                return true;
+            case R.id.logout:
+
+                // An alertDialog will pop to ask the user to double-confirm their decision of logging out
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(this);
+                alertDialogBuilder
+                        .setTitle("Log Out")
+                        .setMessage("Are you sure you want to log out?")
+                        .setCancelable(false) // avoid indeterminate state
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();  // close dialog box only
+                                    }
+                                }
+                        )
+                        .setPositiveButton("Confirm",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                        // when user clicks Confirm btn to decide to log out, the intent takes them to the SignIn activity
+                                        startActivity(new Intent(ProfileActivity.this, SignInActivity.class));
+                                        Toast.makeText(getApplicationContext(), "Log out successfully.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                        );
+
+                // Postcondition
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -165,6 +206,16 @@ public class ProfileActivity extends AppCompatActivity implements OnItemClickLis
     {
 
     }
+
+
+    @Override
+    protected void onStop()
+    {
+        //unregisterReceiver(batteryStatusReceiver);
+
+        super.onStop();
+    }
+
 
     // This class is used to receive the Broadcast for device's current battery status
     private class BatteryStatusReceiver extends BroadcastReceiver {

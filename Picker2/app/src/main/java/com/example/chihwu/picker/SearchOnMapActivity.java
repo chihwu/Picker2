@@ -18,7 +18,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.util.Log;
+import android.content.pm.PackageManager;
+
 import dataObjects.User;
+
 
 /*
  *   Known Issue:  This activity is used to display the user's current location along with other nearby users' locations
@@ -36,8 +39,24 @@ public class SearchOnMapActivity extends AppCompatActivity implements LocationLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_on_map);
 
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+        if(locationManager == null)
+        {
+            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        }
+
+
+        PackageManager pm = getApplicationContext().getPackageManager();
+        int hasPerm = pm.checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext().getPackageName());
+        if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+            Log.i("PERMISSION GRANTED", "We got the permission!!!!!!!!!!!!!");
+
+            //note that here we try to use both Network and GPS for detecting the location updates just in case either of them might not work all the time
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
+
+        }
+
+
 
 
         if(map == null)
@@ -85,9 +104,10 @@ public class SearchOnMapActivity extends AppCompatActivity implements LocationLi
         for(User user : FunctionListFragment.usersList)
         {
 
+
             // here we add more markers for other users nearby on the map
             map.addMarker(
-                    new MarkerOptions().position(new LatLng(user.getCurrentLat(), user.getCurrentLong())).title(user.getUserName()+" is here now."));
+                    new MarkerOptions().position(new LatLng(user.getCurrentLat(), user.getCurrentLong())).title(user.getUserName() + " is here now.").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         }
 
 

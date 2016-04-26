@@ -16,7 +16,7 @@ import android.app.Dialog;
 import java.util.Calendar;
 import android.util.Log;
 
-
+// This is DialogFragment is used to allow users to select their birth date use DatePickerDialog widget
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
     private Button BODdatePicker;
@@ -36,6 +36,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         return new DatePickerDialog(getContext() , this, year, month, day);
     }
 
+    // When users select their birthday on the DatePickerDialog
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
         Log.i("TIME", "Time Info");

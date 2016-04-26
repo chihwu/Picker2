@@ -106,6 +106,7 @@ public class AddFriendsActivity extends AppCompatActivity implements OnItemClick
     {
         Log.i("POSITION", Integer.toString(position));
 
+        // This is where we will use Intent to send an email using an email client on our android device.
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");

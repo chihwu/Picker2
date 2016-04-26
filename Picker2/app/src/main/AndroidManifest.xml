@@ -48,7 +48,10 @@
         <activity android:name=".ConnectionStatusCheckActivity" />
         <activity android:name=".AddFriendsActivity" />
         <activity android:name=".LoginHistoryActivity" />
-        <activity android:name=".SearchOnMapActivity"></activity>
+        <activity android:name=".SearchOnMapActivity" />
+        <activity android:name=".UserProfileActivity"></activity>
+
+        <receiver android:name=".NewNearbyUserAlarmReceiver"></receiver>
     </application>
 
 </manifest>

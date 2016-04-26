@@ -23,6 +23,8 @@
     <string name="google_maps_key">AIzaSyBdylvYnilt5yKLiDI2CwV4VUoSKWM7WRk</string>
     <string name="search_title">Search</string>
     <string name="our_website_title">Our Website</string>
+    <string name="users_nearby">Other Users Nearby</string>
+    <string name="logout">Log Out</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">This function is still under construction.</string>
